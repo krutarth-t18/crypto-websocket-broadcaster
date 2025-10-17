@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto WebSocket Client Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #status { font-weight: bold; margin-bottom: 10px; }
+        .open { color: green; }
+        .closed { color: red; }
+        #messages { list-style: none; padding: 0; max-height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; }
+        #messages li { padding: 5px 0; border-bottom: 1px dotted #eee; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <h1>FastAPI WebSocket Test Client</h1>
+    <p>Connection Status: <span id="status" class="closed">CLOSED</span></p>
+    <button onclick="connectWebSocket()">Connect</button>
+    <button onclick="closeWebSocket()" disabled id="closeButton">Disconnect</button>
+
+    <h2>Real-Time Price Updates (BTC/USDT)</h2>
+    <ul id="messages">
+        <li>Awaiting connection...</li>
+    </ul>
+
+    <script>
+        const websocketUrl = 'ws://localhost:8000/ws';
+        let ws = null;
+
+        const statusElement = document.getElementById('status');
+        const messagesElement = document.getElementById('messages');
+        const closeButton = document.getElementById('closeButton');
+
+        function logMessage(text, isError = false) {
+            const li = document.createElement('li');
+            li.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
+            if (isError) {
+                li.style.color = 'darkred';
+            }
+            messagesElement.prepend(li);
+        }
+
+        function connectWebSocket() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                logMessage('Already connected.', true);
+                return;
+            }
+
+            logMessage(`Attempting to connect to: ${websocketUrl}`);
+            ws = new WebSocket(websocketUrl);
+
+            ws.onopen = () => {
+                statusElement.textContent = 'OPEN';
+                statusElement.className = 'open';
+                closeButton.disabled = false;
+                messagesElement.innerHTML = '';
+                logMessage('Connection successful!');
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    const messageText = `SYMBOL: ${data.symbol} | PRICE: ${parseFloat(data.last_price).toFixed(2)} | 24H CHANGE: ${parseFloat(data.change_percent).toFixed(2)}%`;
+                    logMessage(messageText);
+                } catch (e) {
+                    logMessage('Error parsing message: ' + event.data, true);
+                }
+            };
+
+            ws.onclose = () => {
+                statusElement.textContent = 'CLOSED';
+                statusElement.className = 'closed';
+                closeButton.disabled = true;
+                logMessage('Connection closed by server or client.', true);
+            };
+
+            ws.onerror = (error) => {
+                logMessage('WebSocket Error occurred.', true);
+                console.error('WebSocket Error:', error);
+            };
+        }
+
+        function closeWebSocket() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            } else {
+                logMessage('No active connection to close.', true);
+            }
+        }
+    </script>
+</body>
+</html>
