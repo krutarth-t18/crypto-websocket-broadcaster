@@ -1,9 +1,12 @@
 # netlify.toml
 
 [build]
-  command = "bash build.sh"
+  command = "pip install -r requirements.txt"
   functions = "netlify/functions"
   publish = "public"
+
+[functions]
+  runtime = "python3.11"
 
 [[redirects]]
   from = "/*"
