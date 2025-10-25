@@ -6,23 +6,17 @@
       "use": "@vercel/python"
     }
   ],
-  "rewrites": [
-    {
-      "source": "/ws",
-      "destination": "/main.py"
-    },
-    {
-      "source": "/price",
-      "destination": "/main.py"
-    }
-  ],
   "routes": [
     {
       "src": "/",
-      "dest": "public/websocket_client.html"
+      "dest": "public/index.html"
     },
     {
-      "src": "/(.*)",
+      "src": "/price",
+      "dest": "main.py"
+    },
+    {
+      "src": "/ws",
       "dest": "main.py"
     }
   ]
