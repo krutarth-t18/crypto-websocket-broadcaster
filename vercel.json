@@ -6,6 +6,16 @@
       "use": "@vercel/python"
     }
   ],
+  "rewrites": [
+    {
+      "source": "/ws",
+      "destination": "/main.py"
+    },
+    {
+      "source": "/price",
+      "destination": "/main.py"
+    }
+  ],
   "routes": [
     {
       "src": "/",
