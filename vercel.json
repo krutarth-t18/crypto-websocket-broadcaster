@@ -8,15 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/",
-      "dest": "public/index.html"
-    },
-    {
-      "src": "/price",
-      "dest": "main.py"
-    },
-    {
-      "src": "/ws",
+      "src": "/(.*)",
       "dest": "main.py"
     }
   ]

@@ -3,9 +3,11 @@ import json
 import uvicorn
 import logging
 import sys
+import os
 from typing import Dict, Any, Set
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.responses import FileResponse
 import websockets
 
 
@@ -109,6 +111,17 @@ async def price_broadcaster():
 
         PRICE_QUEUE.task_done()
 
+
+@app.get("/")
+async def serve_index():
+    """Serves the index.html file at the root path."""
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    html_file_path = os.path.join(base_dir, "public", "index.html")
+
+    if not os.path.exists(html_file_path):
+        logger.error(msg=f"HTML file not found at: {html_file_path}")
+        return {"error": "Index file missing"}, 500
+    return FileResponse(html_file_path, media_type="text/html")
 
 @app.get("/price")
 async def get_latest_price():
