@@ -8,6 +8,10 @@
   ],
   "routes": [
     {
+      "src": "/",
+      "dest": "public/websocket_client.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "main.py"
     }

@@ -3,4 +3,4 @@
 .venv
 __pycache__
 *.pyc
-websocket_client.html
+public/websocket_client.html
