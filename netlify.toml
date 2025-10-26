@@ -1,14 +1,5 @@
 # netlify.toml
 
 [build]
-  command = "pip install -r requirements.txt"
-  functions = "netlify/functions"
   publish = "public"
-
-[functions]
-  runtime = "python3.11"
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api"
-  status = 200
+  command = ""

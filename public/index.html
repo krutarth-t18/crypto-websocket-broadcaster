@@ -26,7 +26,16 @@
     </ul>
 
     <script>
-        const websocketUrl = 'ws://localhost:8000/ws';
+        // Detect if running on Netlify or local/Vercel
+        const isNetlify = window.location.hostname.includes("netlify.app");
+
+        // Use your Vercel backend URL for Netlify, otherwise relative path
+        const backendBase = isNetlify
+            ? "crypto-websocket-broadcaster-git-master-krutarth-t18s-projects.vercel.app"
+            : window.location.host;
+
+        // Construct full WebSocket URL
+        const websocketUrl = `wss://${backendBase}/ws`;
         let ws = null;
 
         const statusElement = document.getElementById('status');
