@@ -3,7 +3,7 @@ import json
 import uvicorn
 import logging
 import sys
-from pathlib import Path
+import os
 from typing import Dict, Any, Set
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -57,9 +57,7 @@ class ClientConnectionManager:
         # Create a list of send tasks
         send_tasks = [conn.send_text(message) for conn in self.active_connections]
 
-        # Use asyncio.gather to run all sends in parallel.
-        # return_exceptions=True ensures that if one client disconnects during broadcast,
-        # it doesn't crash the entire broadcaster.
+        # Used asyncio.gather to run all sends in parallel.
         await asyncio.gather(*send_tasks, return_exceptions=True)
 
 client_connection_manager = ClientConnectionManager()
@@ -115,13 +113,13 @@ async def price_broadcaster():
 @app.get("/")
 async def serve_index():
     """Serves the index.html file at the root path."""
-    base_path = Path(__file__).parent
-    html_file_path = base_path / "index.html"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    html_file_path = os.path.join(base_dir, "index.html")
 
-    if not html_file_path.exists():
+    if not os.path.exists(html_file_path):
         logger.error(msg=f"HTML file not found at: {html_file_path}")
         return {"error": "Index file missing"}, 500
-    return FileResponse(str(html_file_path), media_type="text/html")
+    return FileResponse(html_file_path, media_type="text/html")
 
 @app.get("/price")
 async def get_latest_price():

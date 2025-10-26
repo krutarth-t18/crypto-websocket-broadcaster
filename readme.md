@@ -60,10 +60,10 @@ You can test the WebSocket functionality using the included HTML client file or 
 #### Option 1: Using the Included HTML Client (Recommended)
 
 1.  Ensure the server is running (`python main.py`).
-2.  Open the included file **`/public/index.html`** in your web browser.
+2.  Open the **`http://localhost:8000`** in your web browser.
 3.  Click the **"Connect"** button.
 4.  The client will connect to `ws://localhost:8000/ws` and immediately display the live price updates.
-5.  Test the **"Disconnect"** button to confirm graceful connection handling on the server side.
+5.  Test the **"Disconnect"** button to confirm graceful disconnection handling on the server side.
 
 #### Option 2: Using the REST API (Bonus Feature)
 
@@ -81,12 +81,3 @@ The application includes a REST endpoint that returns the latest price snapshot.
     }
     ```
 
----
-
-### ⚠️ Note on Deployment (Vercel/Netlify)
-
-This application is designed as a **long-running Python asynchronous process** to maintain persistent WebSocket connections.
-
-Due to their serverless and function-based architectures, **Vercel and Netlify do not support true, long-running WebSockets.**
-
-For a production deployment, this application would require a dedicated container service or virtual machine environment (e.g., **Render**, AWS EC2, or Azure Container Apps) capable of hosting a long-lived process.
