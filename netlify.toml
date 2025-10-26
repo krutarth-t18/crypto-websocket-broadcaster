@@ -9,6 +9,6 @@
   runtime = "python3.11"
 
 [[redirects]]
-  from = "/*"
+  from = "/api/*"
   to = "/.netlify/functions/api"
   status = 200
