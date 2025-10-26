@@ -3,7 +3,7 @@ import json
 import uvicorn
 import logging
 import sys
-import os
+from pathlib import Path
 from typing import Dict, Any, Set
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -115,13 +115,13 @@ async def price_broadcaster():
 @app.get("/")
 async def serve_index():
     """Serves the index.html file at the root path."""
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    html_file_path = os.path.join(base_dir, "public", "index.html")
+    base_path = Path(__file__).parent
+    html_file_path = base_path / "public" / "index.html"
 
-    if not os.path.exists(html_file_path):
+    if not html_file_path.exists():
         logger.error(msg=f"HTML file not found at: {html_file_path}")
         return {"error": "Index file missing"}, 500
-    return FileResponse(html_file_path, media_type="text/html")
+    return FileResponse(str(html_file_path), media_type="text/html")
 
 @app.get("/price")
 async def get_latest_price():
