@@ -116,7 +116,7 @@ async def price_broadcaster():
 async def serve_index():
     """Serves the index.html file at the root path."""
     base_path = Path(__file__).parent
-    html_file_path = base_path / "public" / "index.html"
+    html_file_path = base_path / "index.html"
 
     if not html_file_path.exists():
         logger.error(msg=f"HTML file not found at: {html_file_path}")
