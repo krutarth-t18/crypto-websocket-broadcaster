@@ -60,7 +60,7 @@ You can test the WebSocket functionality using the included HTML client file or 
 #### Option 1: Using the Included HTML Client (Recommended)
 
 1.  Ensure the server is running (`python main.py`).
-2.  Hit the **`http://localhost:8000`** in your web browser.
+2.  Open the **`http://localhost:8000`** in your web browser.
 3.  Click the **"Connect"** button.
 4.  The client will connect to `ws://localhost:8000/ws` and immediately display the live price updates.
 5.  Test the **"Disconnect"** button to confirm graceful disconnection handling on the server side.
